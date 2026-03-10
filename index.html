@@ -9,7 +9,7 @@
   <body>
     <main class="app">
       <header class="app__header">
-        <h1>15パズル</h1>
+        <h1>スライドパズル</h1>
         <p class="app__subtitle">タップ / クリックでタイルを動かして完成を目指そう</p>
       </header>
 
@@ -18,8 +18,17 @@
         <div><span>経過</span><strong id="timer">00:00</strong></div>
       </section>
 
+      <section class="config">
+        <label for="size">盤面サイズ</label>
+        <select id="size" aria-label="盤面サイズを選択">
+          <option value="3">3 × 3（8パズル）</option>
+          <option value="4" selected>4 × 4（15パズル）</option>
+          <option value="5">5 × 5（24パズル）</option>
+        </select>
+      </section>
+
       <section class="board-wrap">
-        <div id="board" class="board" role="grid" aria-label="15パズルの盤面"></div>
+        <div id="board" class="board" role="grid" aria-label="スライドパズルの盤面"></div>
       </section>
 
       <section class="controls">

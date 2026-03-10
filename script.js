@@ -1,6 +1,5 @@
-const size = 4;
-const total = size * size;
-const solvedBoard = [...Array(total - 1).keys()].map((n) => n + 1).concat(0);
+let size = 4;
+let solvedBoard = createSolvedBoard(size);
 let board = [...solvedBoard];
 let moves = 0;
 let timerSeconds = 0;
@@ -13,6 +12,12 @@ const timerEl = document.getElementById("timer");
 const messageEl = document.getElementById("message");
 const shuffleBtn = document.getElementById("shuffle");
 const resetBtn = document.getElementById("reset");
+const sizeSelect = document.getElementById("size");
+
+function createSolvedBoard(currentSize) {
+  const total = currentSize * currentSize;
+  return [...Array(total - 1).keys()].map((n) => n + 1).concat(0);
+}
 
 function startTimer() {
   if (timerId) return;
@@ -35,6 +40,7 @@ function formatTime(seconds) {
 
 function renderBoard() {
   boardEl.innerHTML = "";
+  boardEl.style.setProperty("--size", String(size));
 
   board.forEach((value, index) => {
     const tile = document.createElement("button");
@@ -115,12 +121,13 @@ function countInversions(arr) {
 
 function isSolvable(arr) {
   const inversions = countInversions(arr);
-  const emptyIndex = arr.indexOf(0);
-  const emptyRowFromBottom = size - Math.floor(emptyIndex / size);
 
   if (size % 2 !== 0) {
     return inversions % 2 === 0;
   }
+
+  const emptyIndex = arr.indexOf(0);
+  const emptyRowFromBottom = size - Math.floor(emptyIndex / size);
 
   if (emptyRowFromBottom % 2 === 0) {
     return inversions % 2 !== 0;
@@ -164,7 +171,21 @@ function resetGame() {
   renderBoard();
 }
 
+function changeBoardSize() {
+  size = Number(sizeSelect.value);
+  solvedBoard = createSolvedBoard(size);
+  board = [...solvedBoard];
+  moves = 0;
+  timerSeconds = 0;
+  gameFinished = false;
+  timerEl.textContent = "00:00";
+  messageEl.textContent = `${size}×${size}盤に切り替えました`;
+  stopTimer();
+  renderBoard();
+}
+
 shuffleBtn.addEventListener("click", startNewGame);
 resetBtn.addEventListener("click", resetGame);
+sizeSelect.addEventListener("change", changeBoardSize);
 
 resetGame();
